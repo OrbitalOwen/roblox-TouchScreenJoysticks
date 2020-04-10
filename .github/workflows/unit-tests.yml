@@ -45,7 +45,13 @@ jobs:
         run: foreman install
       - name: run rojo build
         run: rojo build -o .\\tests\\build.rbxlx .\\tests\\
+      - run: |
+        New-Item -Path .\\screenshots -Type Directory
+        Invoke-WebRequest -Uri "http://keepnote.org/boxcutter/download/boxcutter-1.0/boxcutter.exe" -OutFile boxcutter.exe
+        Start-Job -FilePath .\\screenshots.ps1
       - run: .\\run-in-roblox.exe .\\tests\\build.rbxlx -s .\\tests\\spec.lua -t 1800
-      - name: upload a desktop screenshot
-        uses: OrbitalOwen/desktop-screenshot-action@0.1
-        if: failure()
+      - run: Compress-Archive -Path .\\screenshots -DestinationPath .\\screenshots.zip
+      - uses: actions/upload-artifact@v1
+        with:
+          name: screenshots.zip
+          path: screenshots.zip
