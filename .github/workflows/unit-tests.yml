@@ -45,10 +45,9 @@ jobs:
         run: foreman install
       - name: run rojo build
         run: rojo build -o .\\tests\\build.rbxlx .\\tests\\
-      - run: |
-        New-Item -Path .\\screenshots -Type Directory
-        Invoke-WebRequest -Uri "http://keepnote.org/boxcutter/download/boxcutter-1.0/boxcutter.exe" -OutFile boxcutter.exe
-        Start-Job -FilePath .\\screenshots.ps1
+      - run: New-Item -Path .\\screenshots -Type Directory
+      - run: Invoke-WebRequest -Uri "http://keepnote.org/boxcutter/download/boxcutter-1.0/boxcutter.exe" -OutFile boxcutter.exe
+      - run: Start-Job -FilePath .\\screenshots.ps1
       - run: .\\run-in-roblox.exe .\\tests\\build.rbxlx -s .\\tests\\spec.lua -t 1800
       - run: Compress-Archive -Path .\\screenshots -DestinationPath .\\screenshots.zip
       - uses: actions/upload-artifact@v1
