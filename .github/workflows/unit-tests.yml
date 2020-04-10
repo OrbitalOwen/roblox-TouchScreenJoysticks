@@ -48,8 +48,8 @@ jobs:
       - run: New-Item -Path .\\screenshots -Type Directory
       - run: Invoke-WebRequest -Uri "http://keepnote.org/boxcutter/download/boxcutter-1.0/boxcutter.exe" -OutFile boxcutter.exe
       - run: Start-Job -FilePath .\\screenshots.ps1
-      - run: .\\run-in-roblox.exe .\\tests\\build.rbxlx -s .\\tests\\spec.lua -t 1800
-      - run: Compress-Archive -Path .\\screenshots -DestinationPath .\\screenshots.zip
+      - run: .\\run-in-roblox.exe --place .\\tests\\build.rbxlx --script .\\tests\\spec.lua
+      - run: Compress-Archive -Path screenshots -DestinationPath screenshots.zip
         if: always()
       - run: ls
         if: always()
