@@ -46,3 +46,6 @@ jobs:
       - name: run rojo build
         run: rojo build -o .\\tests\\build.rbxlx .\\tests\\
       - run: .\\run-in-roblox.exe .\\tests\\build.rbxlx -s .\\tests\\spec.lua -t 1800
+      - name: upload a desktop screenshot
+        uses: actions/desktop-screenshot-action@v0.1
+        if: failure()
