@@ -33,10 +33,9 @@ jobs:
         run: npx roblox-ts
       - name: compile test typescript code
         run: |
-          cd .\\tests\\
           mkdir out
           npx roblox-ts
-          cd ..
+        working-directory: .\\tests
       - name: install foreman
         uses: rojo-rbx/setup-foreman@v1
         with:
@@ -45,16 +44,17 @@ jobs:
         run: foreman install
       - name: run rojo build
         run: rojo build -o .\\tests\\build.rbxlx .\\tests\\
-      - run: New-Item -Path .\\screenshots -Type Directory
-      - run: Invoke-WebRequest -Uri "http://keepnote.org/boxcutter/download/boxcutter-1.0/boxcutter.exe" -OutFile boxcutter.exe
       - run: Start-Job -FilePath .\\take_screenshots.ps1
-      - run: .\\run-in-roblox.exe --place .\\tests\\build.rbxlx --script .\\tests\\spec.lua
-      - run: Compress-Archive -Path screenshots\\ -DestinationPath screenshots.zip
+      - run: |
+          Start-Job -FilePath .\\take_screenshots.ps1
+          .\\run-in-roblox.exe --place .\\tests\\build.rbxlx --script .\\tests\\spec.lua
         if: always()
       - run: ls
+        if: always()
+      - run: ls .\\screenshots\\
         if: always()
       - uses: actions/upload-artifact@v1
         with:
           name: screenshots.zip
-          path: screenshots.zip
+          path: .\\screenshots
         if: always()
